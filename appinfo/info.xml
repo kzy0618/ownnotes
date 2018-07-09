@@ -4,7 +4,7 @@
     <name>Own Notes</name>
     <description>My first ownCloud App</description>
     <licence>AGPL</licence>
-    <author>Your Name</author>
+    <author>Jona</author>
     <version>0.0.1</version>
     <namespace>OwnNotes</namespace>
     <category>tool</category>

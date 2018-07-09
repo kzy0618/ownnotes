@@ -4,13 +4,15 @@ namespace OCA\OwnNotes\Db;
 use JsonSerializable;
 use OCP\AppFramework\Db\Entity;
 
-class Note extends Entity implements JsonSerializable {
+class Note extends Entity implements JsonSerializable
+{
 
     protected $title;
     protected $content;
     protected $userId;
 
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -18,4 +20,13 @@ class Note extends Entity implements JsonSerializable {
         ];
     }
 
+    public function __toString()
+    {
+        return 'OCA\OwnNotes\Db\Note' . "{
+			'id' => $this->id,
+			'title' => $this->title,
+			'content' => $this->content,
+			'userId' => $this->userId
+		}";
+    }
 }
