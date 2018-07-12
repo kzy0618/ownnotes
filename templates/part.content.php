@@ -7,4 +7,5 @@
         <div class="save"><button disabled><?php p($l->t('Save')); ?></button></div>
     {{/if}}
 </script>
+
 <div id="editor"></div>

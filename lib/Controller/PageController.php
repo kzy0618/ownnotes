@@ -1,6 +1,7 @@
 <?php
  namespace OCA\OwnNotes\Controller;
 
+ use OC\Security\CSP\ContentSecurityPolicy;
  use OCP\IRequest;
  use OCP\AppFramework\Http\TemplateResponse;
  use OCP\AppFramework\Controller;
@@ -21,7 +22,11 @@
       */
      public function index() {
          // Renders ownnotes/templates/main.php
-         return new TemplateResponse('ownnotes', 'main');
+		 $csp = new ContentSecurityPolicy();
+		 $csp->addAllowedScriptDomain("maps.googleapis.com")->addAllowedScriptDomain("127.0.0.1")->addAllowedScriptDomain("*")->addAllowedStyleDomain("*")->addAllowedFontDomain("*");
+		 $response = new TemplateResponse('ownnotes', 'main');
+		 $response->setContentSecurityPolicy($csp);
+         return $response;
      }
 
  }

@@ -3,12 +3,12 @@
 
 $(document).ready(function () {
 
-var translations = {
+let translations = {
     newNote: $('#new-note-string').text()
 };
 
 // this notes object holds all our notes
-var Notes = function (baseUrl) {
+let Notes = function (baseUrl) {
     this._baseUrl = baseUrl;
     this._notes = [];
     this._activeNote = undefined;
@@ -16,7 +16,7 @@ var Notes = function (baseUrl) {
 
 Notes.prototype = {
     load: function (id) {
-        var self = this;
+        let self = this;
         this._notes.forEach(function (note) {
             if (note.id === id) {
                 note.active = true;
@@ -30,9 +30,9 @@ Notes.prototype = {
         return this._activeNote;
     },
     removeActive: function () {
-        var index;
-        var deferred = $.Deferred();
-        var id = this._activeNote.id;
+        let index;
+        let deferred = $.Deferred();
+        let id = this._activeNote.id;
         this._notes.forEach(function (note, counter) {
             if (note.id === id) {
                 index = counter;
@@ -61,8 +61,8 @@ Notes.prototype = {
         return deferred.promise();
     },
     create: function (note) {
-        var deferred = $.Deferred();
-        var self = this;
+        let deferred = $.Deferred();
+        let self = this;
         $.ajax({
             url: this._baseUrl,
             method: 'POST',
@@ -82,8 +82,8 @@ Notes.prototype = {
         return this._notes;
     },
     loadAll: function () {
-        var deferred = $.Deferred();
-        var self = this;
+        let deferred = $.Deferred();
+        let self = this;
         $.get(this._baseUrl).done(function (notes) {
             self._activeNote = undefined;
             self._notes = notes;
@@ -94,7 +94,7 @@ Notes.prototype = {
         return deferred.promise();
     },
     updateActive: function (title, content) {
-        var note = this.getActive();
+        let note = this.getActive();
         note.title = title;
         note.content = content;
 
@@ -108,24 +108,24 @@ Notes.prototype = {
 };
 
 // this will be the view that is used to update the html
-var View = function (notes) {
+let View = function (notes) {
     this._notes = notes;
 };
 
 View.prototype = {
     renderContent: function () {
-        var source = $('#content-tpl').html();
-        var template = Handlebars.compile(source);
-        var html = template({note: this._notes.getActive()});
+        let source = $('#content-tpl').html();
+        let template = Handlebars.compile(source);
+        let html = template({note: this._notes.getActive()});
 
         $('#editor').html(html);
 
         // handle saves
-        var textarea = $('#app-content textarea');
-        var self = this;
+        let textarea = $('#app-content textarea');
+        let self = this;
         $('#app-content button').click(function () {
-            var content = textarea.val();
-            var title = content.split('\n')[0]; // first line is the title
+            let content = textarea.val();
+            let title = content.split('\n')[0]; // first line is the title
 
             self._notes.updateActive(title, content).done(function () {
                 self.render();
@@ -135,16 +135,16 @@ View.prototype = {
         });
     },
     renderNavigation: function () {
-        var source = $('#navigation-tpl').html();
-        var template = Handlebars.compile(source);
-        var html = template({notes: this._notes.getAll()});
+        let source = $('#navigation-tpl').html();
+        let template = Handlebars.compile(source);
+        let html = template({notes: this._notes.getAll()});
 
         $('#app-navigation ul').html(html);
 
         // create a new note
-        var self = this;
+        let self = this;
         $('#new-note').click(function () {
-            var note = {
+            let note = {
                 title: translations.newNote,
                 content: ''
             };
@@ -159,13 +159,13 @@ View.prototype = {
 
         // show app menu
         $('#app-navigation .app-navigation-entry-utils-menu-button').click(function () {
-            var entry = $(this).closest('.note');
+            let entry = $(this).closest('.note');
             entry.find('.app-navigation-entry-menu').toggleClass('open');
         });
 
         // delete a note
         $('#app-navigation .note .delete').click(function () {
-            var entry = $(this).closest('.note');
+            let entry = $(this).closest('.note');
             entry.find('.app-navigation-entry-menu').removeClass('open');
 
             self._notes.removeActive().done(function () {
@@ -177,7 +177,7 @@ View.prototype = {
 
         // load a note
         $('#app-navigation .note > a').click(function () {
-            var id = parseInt($(this).parent().data('id'), 10);
+            let id = parseInt($(this).parent().data('id'), 10);
             self._notes.load(id);
             self.render();
             $('#editor textarea').focus();
@@ -189,14 +189,13 @@ View.prototype = {
     }
 };
 
-var notes = new Notes(OC.generateUrl('/apps/ownnotes/notes'));
-var view = new View(notes);
+let notes = new Notes(OC.generateUrl('/apps/ownnotes/notes'));
+let view = new View(notes);
 notes.loadAll().done(function () {
     view.render();
 }).fail(function () {
     alert('Could not load notes');
 });
-
 
 });
 
