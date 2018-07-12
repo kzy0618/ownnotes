@@ -9,7 +9,6 @@
     <namespace>OwnNotes</namespace>
     <category>tool</category>
     <dependencies>
-        <owncloud min-version="9" />
-        <owncloud max-version="10.0.8" />
+        <owncloud min-version="9" max-version="10.1.0" />
     </dependencies>
 </info>
